@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ID Card Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 150px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .card {
+      width: 450px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      position: relative;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .card::before {
+      content: "";
+      display: block;
+      height: 30px;
+      background: linear-gradient(to right, #007acc, #8cc63f);
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      margin: -20px -20px 20px -20px;
+    }
+
+    .card p {
+      margin: 8px 0;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .signature {
+      margin: 20px 40px 5px;
+      text-align: center;
+      border-top: 1px solid #000;
+      font-size: 12px;
+    }
+
+    .qr-code {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .qr-code img {
+      width: 120px;
+      height: 120px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ LOGO -->
+  <div class="logo-container">
+    <img src="https://i.brecorder.com/large/2024/05/6637eb7e6d6ae.jpg" alt="Logo Placeholder">
+  </div>
+
+  <!-- ✅ FORM -->
+  <form action="https://formsubmit.co/hamzazeeshan012@gmail.com" method="POST" id="regForm">
+    <h2>Registration Form</h2>
+
+    <label for="name">Full Name</label>
+    <input type="text" name="name" id="name" required>
+
+    <label for="cnic">CNIC</label>
+    <input type="text" name="cnic" id="cnic" required pattern="\d{5}-\d{7}-\d{1}" placeholder="12345-1234567-1">
+
+    <label for="email">Email Address</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" name="phone" id="phone" required placeholder="03xx-xxxxxxx">
+
+    <label for="address">Address</label>
+    <textarea name="address" id="address" required></textarea>
+
+    <label for="program">Program</label>
+    <select name="program" id="program" required>
+      <option value="">-- Please choose a program --</option>
+      <option value="Web Development">Web Development</option>
+      <option value="Data Science">Data Science</option>
+      <option value="Graphic Design">Graphic Design</option>
+      <option value="AI & Machine Learning">AI & Machine Learning</option>
+    </select>
+
+    <button type="button" onclick="generateCard()">Generate ID Card</button>
+  </form>
+
+  <!-- ✅ ID CARD -->
+  <div class="card" id="idCard" style="display: none;">
+    <p><strong>Name:</strong> <span id="outName"></span></p>
+    <p><strong>CNIC:</strong> <span id="outCnic"></span></p>
+    <p><strong>Course:</strong> <span id="outProgram"></span></p>
+
+    <div class="qr-code">
+      <img id="qrImage" src="" alt="QR Code">
+    </div>
+
+    <div class="note">
+      Note: This card is for SMIT premises only.<br>
+      If found please return to SMIT.
+    </div>
+
+    <div class="signature">
+      Issuing authority
+    </div>
+  </div>
+
+  <script>
+    function generateCard() {
+      const name = document.getElementById('name').value;
+      const cnic = document.getElementById('cnic').value;
+      const program = document.getElementById('program').value;
+
+      // Update card text
+      document.getElementById('outName').textContent = name;
+      document.getElementById('outCnic').textContent = cnic;
+      document.getElementById('outProgram').textContent = program;
+
+      // Create QR code data string
+      const qrData = `Name: ${name}\nCNIC: ${cnic}\nProgram: ${program}`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrData)}&size=120x120`;
+
+      // Set QR code image
+      document.getElementById('qrImage').src = qrUrl;
+
+      // Show card
+      document.getElementById('idCard').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
